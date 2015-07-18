@@ -1,0 +1,25 @@
+{
+  "name": "ionimage",
+  "version": "0.1.0",
+  "authors": [
+    "Daniel Perez <daniel@claudetech.com>"
+  ],
+  "description": "Tools to select and upload images using ionic framework",
+  "main": "dist/ionimage.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "ionic",
+    "image"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/claudetech/ionimage",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

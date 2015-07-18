@@ -1,0 +1,13 @@
+._ionimg-picker
+  .image-wrapper(
+    ng-repeat="image in images"
+    ng-class="{selected: selection[image.id]}"
+    ng-click="toggleSelection(image)"
+  )
+    img.image(ng-src="{{image.thumbnailPath}}")
+
+  ion-infinite-scroll(
+    ng-if="canLoadMore"
+    on-infinite="loadMore()"
+    distance="1%"
+  )
