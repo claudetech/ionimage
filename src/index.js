@@ -9,5 +9,5 @@ module.exports = angular.module('ionimage', [
   'ngCordova'
 ])
 .directive('ionimgPicker', require('./directives/image-picker'))
-.factory('ionimgUploader', require('./services/uploader'))
+.provider('ionimgUploader', require('./services/uploader'))
 .factory('ionimgMediaLister', require('./services/media-lister'));
