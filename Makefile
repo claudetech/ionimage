@@ -1,6 +1,11 @@
+MAKE = make
 NPM = npm
 
-all: install dev dist
+all:
+	$(MAKE) install
+	$(MAKE) build
+
+build: dev dist
 
 dev:
 	webpack
@@ -11,4 +16,4 @@ dist:
 install:
 	$(NPM) install
 
-.PHONY: dist
+.PHONY: dist dev install build
