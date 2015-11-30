@@ -24,6 +24,16 @@ var sum = function (array) {
   return sum;
 };
 
+var queryToString = function (query) {
+  var queries = [];
+  for (var key in query) {
+    if (query.hasOwnProperty(key)) {
+      queries.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]));
+    }
+  }
+  return queries.join('&');
+};
+
 var uploadProvider = function () {
   var endpoint = defaultEndpoint;
 
@@ -35,6 +45,9 @@ var uploadProvider = function () {
     options = options || {};
     options.http = options.http || {};
     options.trustHosts = options.trustHosts || false;
+    if (options.http.query && typeof options.http.query !== 'string') {
+      options.http.query = queryToString(options.http.query);
+    }
     return options;
   };
 
@@ -95,6 +108,9 @@ var uploadProvider = function () {
     var executeUpload = function (allDeferred, progressInfo, options) {
       var handleUpload = function (deferred, filePath) {
         var url = options.endpoint || endpoint;
+        if (options.http.query) {
+          url += (url.indexOf('?') > -1 ? '&' : '?') + options.http.query;
+        }
         $cordovaFileTransfer.upload(url, filePath, options.http, options.trustHosts)
         .then(onSuccess(deferred, filePath, options),
           deferred.reject,
