@@ -134,7 +134,7 @@
 	            if ($scope.selectedImages.length >= maxImagesCount && replaceOnMaxReached) {
 	              removeFirstImage();
 	            }
-	            if ($scope.selectedImages.length < maxImagesCount) {
+	            if (!maxImagesCount || $scope.selectedImages.length < maxImagesCount) {
 	              $scope.selection[image.id] = image;
 	              $scope.$emit('ionimg:selected', image);
 	            } else {
@@ -151,7 +151,7 @@
 	              $scope.selectedImages.push($scope.selection[id]);
 	            }
 	          }
-	          if ($scope.selectedImages.length >= maxImagesCount) {
+	          if (maxImagesCount && $scope.selectedImages.length >= maxImagesCount) {
 	            $scope.$emit('ionimg:max-reached');
 	          }
 	        };
