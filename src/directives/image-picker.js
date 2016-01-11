@@ -76,9 +76,20 @@ var imagePickerFactory = function ($parse) {
           }
         };
 
+        var addNewEntry = function (entry) {
+          for (var j = 0; j < $scope.images.length; j++) {
+            if ($scope.images[j].path === entry.path) {
+              return;
+            }
+          }
+          $scope.images.push(entry);
+        };
+
         $scope.loadMore = function () {
           ionimgMediaLister.readLibrary(loadOptions).then(function (result) {
-            $scope.images = $scope.images.concat(result.entries);
+            for (var i = 0; i < result.entries.length; i++) {
+              addNewEntry(result.entries[i]);
+            }
             $scope.canLoadMore = result.entries.length > 0;
             loadOptions = result.nextOptions;
           }.bind(this), function (err) {
