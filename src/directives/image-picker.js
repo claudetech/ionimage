@@ -22,8 +22,8 @@ var imagePickerFactory = function ($parse) {
         }
         var loadOptions = {
           thumbnail: {
-            width: ($attrs.width && $parse($attrs.imgWidth)($scope.$parent)) || 128,
-            height: ($attrs.height && $parse($attrs.imgHeight)($scope.$parent)) || 128
+            width: ($attrs.width && $parse($attrs.imgWidth)($scope.$parent)) || 256,
+            height: ($attrs.height && $parse($attrs.imgHeight)($scope.$parent)) || 256
           },
           mediaTypes: ['image']
         };
