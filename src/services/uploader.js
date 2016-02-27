@@ -106,12 +106,12 @@ var uploadProvider = function () {
     };
 
     var executeUpload = function (allDeferred, progressInfo, options) {
-      var handleUpload = function (deferred, filePath) {
+      var handleUpload = function (deferred, filePath, content) {
         var url = options.endpoint || endpoint;
         if (options.http.query) {
           url += (url.indexOf('?') > -1 ? '&' : '?') + options.http.query;
         }
-        $cordovaFileTransfer.upload(url, filePath, options.http, options.trustHosts)
+        $cordovaFileTransfer.upload(url, content || filePath, options.http, options.trustHosts)
         .then(onSuccess(deferred, filePath, options),
           deferred.reject,
           onProgress(allDeferred, progressInfo, filePath));
@@ -123,7 +123,7 @@ var uploadProvider = function () {
         if (uploadedFiles[filePath] && !options.force) {
           handleUploaded(deferred, filePath, progressInfo);
         } else {
-          handleUpload(deferred, filePath);
+          handleUpload(deferred, filePath, file.content);
         }
         return deferred.promise;
       };
