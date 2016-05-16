@@ -7,7 +7,6 @@ Library to easily get images from user and upload them using [ionic](http://ioni
 This library depends on
 
 * [ionic](http://ionicframework.com/)
-* [ngCordova](http://ngcordova.com/)
 * [cordova-plugin-file-transfer](https://github.com/apache/cordova-plugin-file-transfer)
 * [cordova-plugin-media-lister](https://github.com/claudetech/cordova-plugin-media-lister)
 
@@ -35,7 +34,7 @@ NOTE: on Android, images are not loaded in memory, and therefore, generated thum
 
 ### `ionimgUploader` service
 
-This is a wrapper around [ngCordova fileTransfer](http://ngcordova.com/docs/plugins/fileTransfer/).
+This is a wrapper around [fileTransfer](https://github.com/apache/cordova-plugin-file-transfer)
 It takes a list of image as returned by `ionimgMediaLister` and upload them to the given URL.
 
 ```

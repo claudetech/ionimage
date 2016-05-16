@@ -51,7 +51,7 @@ var uploadProvider = function () {
     return options;
   };
 
-  var uploadFactory = function ($q, $cordovaFileTransfer) {
+  var uploadFactory = function ($q, $window, $timeout) {
     var uploadedFiles = {};
 
     var allSettled = function (promises) {
@@ -105,13 +105,38 @@ var uploadProvider = function () {
       deferred.resolve(uploadedFiles[filePath]);
     };
 
+    // https://github.com/driftyco/ng-cordova/blob/master/src/plugins/fileTransfer.js
+    var upload = function (server, filePath, options, trustAllHosts) {
+      var q = $q.defer();
+      var ft = new $window.FileTransfer();
+      var uri = (options && options.encodeURI === false) ? server : encodeURI(server);
+
+      if (options && options.timeout !== undefined && options.timeout !== null) {
+        $timeout(function () {
+          ft.abort();
+        }, options.timeout);
+        options.timeout = null;
+      }
+
+      ft.onprogress = function (progress) {
+        q.notify(progress);
+      };
+
+      q.promise.abort = function () {
+        ft.abort();
+      };
+
+      ft.upload(filePath, uri, q.resolve, q.reject, options, trustAllHosts);
+      return q.promise;
+    }
+
     var executeUpload = function (allDeferred, progressInfo, options) {
       var handleUpload = function (deferred, filePath, content) {
         var url = options.endpoint || endpoint;
         if (options.http.query) {
           url += (url.indexOf('?') > -1 ? '&' : '?') + options.http.query;
         }
-        $cordovaFileTransfer.upload(url, content || filePath, options.http, options.trustHosts)
+        upload(url, content || filePath, options.http, options.trustHosts)
         .then(onSuccess(deferred, filePath, options),
           deferred.reject,
           onProgress(allDeferred, progressInfo, filePath));
@@ -141,7 +166,7 @@ var uploadProvider = function () {
     };
   };
 
-  this.$get = ['$q', '$cordovaFileTransfer', uploadFactory];
+  this.$get = ['$q', '$window', '$timeout', uploadFactory];
 };
 
 module.exports = uploadProvider;
