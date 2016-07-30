@@ -1,6 +1,6 @@
 {
   "name": "ionimage",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Tools to select and upload images using ionic framework",
   "main": "dist/ionimage.js",
   "scripts": {
