@@ -9,4 +9,5 @@ module.exports = angular.module('ionimage', [
 ])
 .directive('ionimgPicker', require('./directives/image-picker'))
 .provider('ionimgUploader', require('./services/uploader'))
-.factory('ionimgMediaLister', require('./services/media-lister'));
+.factory('ionimgMediaLister', require('./services/media-lister'))
+.factory('ionimgResize', require('./services/resize-image'));

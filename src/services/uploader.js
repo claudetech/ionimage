@@ -1,6 +1,8 @@
 'use strict';
 
 var defaultEndpoint = 'http://localhost:3000/upload';
+var resizeImage = require('./resize-image');
+
 
 var mapValues = function (obj, callback) {
   if (typeof obj.map === 'function') {
@@ -51,7 +53,7 @@ var uploadProvider = function () {
     return options;
   };
 
-  var uploadFactory = function ($q, $window, $timeout) {
+  var uploadFactory = function ($q, $window, $timeout, resizeImage) {
     var uploadedFiles = {};
 
     var allSettled = function (promises) {
@@ -128,7 +130,7 @@ var uploadProvider = function () {
 
       ft.upload(filePath, uri, q.resolve, q.reject, options, trustAllHosts);
       return q.promise;
-    }
+    };
 
     var executeUpload = function (allDeferred, progressInfo, options) {
       var handleUpload = function (deferred, filePath, content) {
@@ -136,7 +138,10 @@ var uploadProvider = function () {
         if (options.http.query) {
           url += (url.indexOf('?') > -1 ? '&' : '?') + options.http.query;
         }
-        upload(url, content || filePath, options.http, options.trustHosts)
+        resizeImage(content || filePath, options.maxSize, options.extension)
+        .then(function (file) {
+          return upload(url, file, options.http, options.trustHosts);
+        })
         .then(onSuccess(deferred, filePath, options),
           deferred.reject,
           onProgress(allDeferred, progressInfo, filePath));
@@ -166,7 +171,7 @@ var uploadProvider = function () {
     };
   };
 
-  this.$get = ['$q', '$window', '$timeout', uploadFactory];
+  this.$get = ['$q', '$window', '$timeout', 'ionimgResize', uploadFactory];
 };
 
 module.exports = uploadProvider;
