@@ -8,10 +8,10 @@ all:
 build: dev dist
 
 dev:
-	webpack
+	npm run build
 
 dist:
-	WEBPACK_ENV=dist webpack
+	WEBPACK_ENV=dist npm run build
 
 install:
 	$(NPM) install
